@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 
-// Selection sort time complexity
+// Shaker sort time complexity
 // Best : O(n)
 // Avg : O(n^2)
 // Worst : O(n^2)
