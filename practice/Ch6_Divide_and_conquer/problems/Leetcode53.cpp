@@ -48,6 +48,7 @@ public:
             index_right++;
         }
         max_center += max;
+        
         return max_center;
     }
 };
