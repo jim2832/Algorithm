@@ -25,7 +25,7 @@ public:
         int max_mid = maxCrossArray(nums);
 
         //判斷何者三者中哪個為最大的
-        return max(max_mid, max(max_left, max_right)); 
+        return max(max_mid, max(max_left, max_right));
     }
 
     int maxCrossArray(vector<int>& nums) {
