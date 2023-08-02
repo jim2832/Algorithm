@@ -9,7 +9,7 @@ public:
 
     int coinChange(vector<int>& coins, int amount) {
         // exception
-        if(!amount){
+        if(amount == 0){
             return 0;
         }
 
