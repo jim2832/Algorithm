@@ -35,7 +35,7 @@ public:
         while(!Pixel.empty()){
             int current = Pixel.front();
             Pixel.pop();
-            int x = current / cols;
+            int x = current / cols; 
             int y = current % cols;
 
             //往下走訪(如果下面的顏色要換掉的話)
