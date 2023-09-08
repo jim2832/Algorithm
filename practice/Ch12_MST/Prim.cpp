@@ -20,12 +20,17 @@ class Graph{
         int find_set(int); //找到是屬於哪個集合
         void merge_set(int, int); //合併兩個集合
         void MST_Kruskal();
+        int find_minimal_distance(); // Prim's algo 找最小距離的函式
+        void MST_Prim();
 
     private:
         int vertex; //紀錄節點
         vector<list<edge*>> edges;
         vector<int> MST_Set; //紀錄每個頂點的set
         vector<edge> MST_Edges; //紀錄MST目前有的邊
+        vector<int> predecessor; //紀錄如果要走到MST，要走哪個點
+        vector<int> distance;
+        vector<bool> finished;
 };
 
 //建構式
@@ -101,6 +106,7 @@ class compare{
 
 // Kruskal Algorithm
 void Graph::MST_Kruskal(){
+    cout << "Kruskal: " << endl;
     int edges_completed = 0; //有幾條邊已經被放入MST
     MST_Edges.clear();
     priority_queue<edge, vector<edge>, compare> sorted_edges; //邊從權重小排到大
@@ -118,7 +124,7 @@ void Graph::MST_Kruskal(){
             sorted_edges.push(**iter);
         }
     }
-
+    
     // 當 priority queue 還不為空 或 已挑到的邊還沒到 v-1 個時繼續做
     while(!sorted_edges.empty() && edges_completed < vertex-1){
         edge current = sorted_edges.top(); //取出權重最小的邊
@@ -139,6 +145,61 @@ void Graph::MST_Kruskal(){
     cout << "Weight of this MST is: " << sum << endl;
 }
 
+int Graph::find_minimal_distance(){
+    int minimal = INT_MAX;
+    int index = -1;
+    for(int i=0; i<vertex; i++){
+        if(distance[i] < minimal && !finished[i]){
+            index = i;
+            minimal = distance[i];
+        }
+    }
+    return index;
+}
+
+// Prim's Algorithm
+void Graph::MST_Prim(){
+    cout << "Prim's: " << endl;
+
+    // init
+    predecessor.resize(vertex);
+    distance.resize(vertex);
+    finished.resize(vertex);
+    for(int i=0; i<vertex; i++){
+        predecessor[i] = -1;
+        distance[i] = INT_MAX;
+        finished[i] = false;
+    }
+
+    //先選一個起點 (以0為例)
+    distance[0] = 0;
+    int index, sum = 0; //index代表被選定的點
+    for(int i=0; i<vertex; i++){
+        index = find_minimal_distance(); //選一個就目前點來說權重最小的
+        finished[index] = true;
+        sum += distance[index];
+        for(auto iter=edges[index].begin(); iter!=edges[index].end(); iter++){
+            int target = (*iter)->to;
+            int current_weight = distance[target];
+            int cross_weight = (*iter)->weight;
+            if(finished[target]){
+                continue;
+            }
+            if(cross_weight < current_weight){
+                distance[target] = cross_weight;
+                predecessor[target] = index;
+            }
+        }
+    }
+
+    for(int i=0; i<vertex; i++){
+        if(predecessor[i] != -1){
+            cout << (char)(i + 65) << "->" << (char)(predecessor[i] + 65) << endl;
+        }
+    }
+    cout << "Weight of this MST is: " << sum << endl;
+}
+
 int main(void){
     Graph g(7);
     g.add_edge(1,2,20);
@@ -151,7 +212,10 @@ int main(void){
     g.add_edge(4,7,25);
     g.add_edge(6,7,10);
     g.add_edge(5,7,5);
+
     g.MST_Kruskal();
+    cout << endl;
+    g.MST_Prim();
 
     return 0;
 }
