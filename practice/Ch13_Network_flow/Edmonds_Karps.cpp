@@ -18,7 +18,7 @@ class Graph{
         Graph(int); //建構式
         void print_edges(); //印出 adjacency matrix
         void add_edge(int, int, int=1); //新增一條邊(from, to, weight)
-        int Network_flow(int, int); //Edmonds_Karps(s: 起點，t: 匯點)
+        int Network_flow(int, int); //Edmonds_Karps(s: 起點, t: 匯點)
 
     private:
         int vertex; //紀錄節點
@@ -94,7 +94,7 @@ int Graph::Network_flow(int s, int t){
 
         // step 2: Find the minimal residual capacity
         int minimal = 2147483647;
-        for(int i=0; i<current.size()-1;i++){
+        for(int i=0; i<current.size()-1; i++){
             int u = current[i];
             int v = current[i+1];
             for(auto iter=edges[u].begin();iter!=edges[u].end();iter++){
@@ -106,7 +106,7 @@ int Graph::Network_flow(int s, int t){
         }
 
         // step 3: Update the residual networks
-        for(int i=0; i<current.size()-1;i++){
+        for(int i=0; i<current.size()-1; i++){
             int u = current[i];
             int v = current[i+1];
             for(auto iter=edges[u].begin();iter!=edges[u].end();iter++){
